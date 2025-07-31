@@ -67,10 +67,11 @@ import torch
 
 dummy_input = torch.randn(1, 3, 224, 224)
 torch.onnx.export(model, dummy_input, "modelo.onnx")
-Paso 2: Carga tu modelo en el worker
-Tu archivo inference_worker.py contiene esta función:
-----------------------------------------------------------
 
+----------------------------------------------------------
+Paso 2: Carga tu modelo en el worker
+
+Tu archivo inference_worker.py contiene esta función:
 
 import onnxruntime
 
