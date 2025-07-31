@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+      - redis
+    volumes:
+      - ./secrets/firebase-key.json:/app/secrets/firebase-key.json
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  worker:
+    build: .
+    command: ["python", "workers/inference_worker.py"]
+    depends_on:
+      - redis
+      - rabbitmq
