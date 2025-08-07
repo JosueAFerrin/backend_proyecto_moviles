@@ -20,3 +20,8 @@ def run_inference(image_bytes):
     label = np.argmax(outputs)
     confidence = float(np.max(outputs))
     return {"label": f"Señal {label}", "confidence": confidence}
+
+def infer_image(image_bytes: bytes):
+    # Lógica real con tu modelo ONNX aquí
+    return {"label": "Límite de velocidad", "confidence": 0.98}
+

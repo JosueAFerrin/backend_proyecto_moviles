@@ -1,14 +1,10 @@
 import firebase_admin
-from firebase_admin import auth, credentials
-from fastapi import HTTPException, Header
+from firebase_admin import credentials
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+FIREBASE_API_KEY = os.getenv("FIREBASE_API_KEY")
 
 cred = credentials.Certificate("secrets/firebase-key.json")
 firebase_admin.initialize_app(cred)
-
-async def verify_token(authorization: str = Header(...)):
-    try:
-        token = authorization.split(" ")[1]
-        decoded = auth.verify_id_token(token)
-        return decoded
-    except Exception:
-        raise HTTPException(status_code=401, detail="Token inválido o expirado")

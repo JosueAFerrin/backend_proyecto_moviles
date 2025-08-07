@@ -1,11 +1,16 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import time
+import json
 import onnxruntime
 import redis
 import pika
+from services.redis import save_task_result
 
 def infer_image(image_bytes):
-    # Código real para procesar imagen con ONNX
-    # Ejemplo ficticio:
+    # Simulación de inferencia real
     return {"label": "Límite de velocidad", "confidence": 0.98}
 
 def connect_redis():
@@ -36,8 +41,7 @@ def callback(ch, method, properties, body):
 
     try:
         prediction = infer_image(body)
-        r = connect_redis()
-        r.setex(task_id, 300, str(prediction))  # TTL de 5 min
+        save_task_result(task_id, {"prediccion": prediction})
         print(f"[✓] Resultado almacenado en Redis con task_id={task_id}")
     except Exception as e:
         print(f"[x] Error procesando la tarea: {e}")
@@ -46,7 +50,7 @@ def consume():
     channel = connect_rabbitmq()
     channel.queue_declare(queue="tasks")
     channel.basic_consume(queue="tasks", on_message_callback=callback, auto_ack=True)
-    print("[✓] Esperando tareas... Ctrl+C para detener.")
+    print("[🟢] Esperando tareas... Ctrl+C para detener.")
     try:
         channel.start_consuming()
     except KeyboardInterrupt:

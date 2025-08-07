@@ -1,10 +1,6 @@
 from fastapi import FastAPI
-from api.routes import router as api_router
+from utils import firebase  # Esto inicializa Firebase al importar
+from api.routes import router
 
 app = FastAPI()
-
-app.include_router(api_router)
-
-@app.get("/health")
-def health():
-    return {"status": "ok"}
+app.include_router(router)

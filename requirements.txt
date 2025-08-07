@@ -10,3 +10,4 @@ pillow
 numpy
 pika
 aioredis
+python-dotenv

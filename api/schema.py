@@ -7,3 +7,8 @@ class PredictionResult(BaseModel):
 class PredictionResponse(BaseModel):
     status: str
     prediction: PredictionResult | None = None
+
+class RegisterRequest(BaseModel):
+    email: str
+    password: str
+
