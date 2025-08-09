@@ -7,6 +7,8 @@ services:
     depends_on:
       - rabbitmq
       - redis
+    env_file:
+      - .env
     volumes:
       - ./secrets/firebase-key.json:/app/secrets/firebase-key.json
 
@@ -28,3 +30,6 @@ services:
     depends_on:
       - redis
       - rabbitmq
+    env_file:
+      - .env
+

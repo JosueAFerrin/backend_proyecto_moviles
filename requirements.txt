@@ -11,3 +11,4 @@ numpy
 pika
 aioredis
 python-dotenv
+google-generativeai

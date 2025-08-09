@@ -6,6 +6,7 @@ from services.redis import get_task_result
 from api.auth import verify_token
 from api.schema import RegisterRequest
 from utils.firebase import FIREBASE_API_KEY
+from utils.gemini import interpret_prediction
 
 router = APIRouter()
 
@@ -50,3 +51,11 @@ def get_result(task_id: str, token=Depends(verify_token)):
     if not result:
         return {"status": "Pendiente o inexistente"}
     return {"status": "Listo", "resultado": result}
+
+@router.post("/interpret")
+def interpret(prediction: dict, token=Depends(verify_token)):
+    try:
+        interpretation = interpret_prediction(prediction)
+        return {"interpretacion": interpretation}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al interpretar con Gemini: {str(e)}")
